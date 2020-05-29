@@ -49,12 +49,12 @@ module.exports = class VoteClass{
     result(){
         var result = "\n"
         if (this.voteYes > this.voteNo)
-            result += "La mojorité a donc voté positivement au sondage. 👍"
+            result += "La majorité a donc voté positivement au sondage. 👍"
         else if(this.voteNo > this.voteYes)
-            result += "La mojorité a donc voté négativement au sondage. 👎"
+            result += "La majorité a donc voté négativement au sondage. 👎"
         else
             result += "C\'est donc une égalité parfaite entre les votes positifs et négatifs."
 
-        return "Résultat des votes pour le sondage ***\"" + this.question + "\"*** proposé par <@" + this.author.id + "> \nVotes positifs: " + this.voteYes + "\nVotes négatifs: " + this.voteNo + result
+        return "Résultat des votes pour le sondage ***\"" + this.question + "\"***  proposé par <@" + this.author.id + "> \nVotes positifs: " + this.voteYes + "\nVotes négatifs: " + this.voteNo + result
     }
 }
