@@ -5,7 +5,7 @@ module.exports = class Vote extends Command {
   //static votes = []
   
   static match(msg){
-    return msg.content.startsWith(Command.prefix + 'vote')
+    return msg.content.startsWith(Command.prefix + 'vote') || msg.content.startsWith(Command.prefix + 'v')
   }
   
   static action(msg){
