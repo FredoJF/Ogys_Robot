@@ -5,6 +5,9 @@ const Hot = require('./commands/hot')
 const Vote = require('./commands/vote')
 const Tg = require('./commands/tg')
 
+bot.on("ready", () => {
+  bot.user.setActivity("_help", { type: "WATCHING" })})
+
 bot.on('message', function(msg) {
   if (!(msg.channel instanceof Discord.DMChannel))
     var commandUsed = Hot.parse(msg) || Tg.parse(msg) || Vote.parse(msg) || Help.parse(msg)
