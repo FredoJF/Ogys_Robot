@@ -20,7 +20,10 @@ module.exports = class Vote extends Command {
     msg.delete()
     text.shift()
     
-    if (!isNaN(text[0].replace('m', ''))){
+    try {
+      if (isNaN(text[0].replace('m', ''))){
+        throw 'Duration is not a number'
+      }
       if (text[0].includes('m')){
         var duration_arr = text[0].split('m')
         if (!(duration_arr[1] === ''))
@@ -57,7 +60,7 @@ module.exports = class Vote extends Command {
           m.delete()
         })
       })
-    } else {
+    } catch(error) {
       msg.reply('Syntaxe invalide, exemple d\'utilisation: `' + Command.prefix + 'vote 5m30 Aimez-vous la couleur rouge ?`, pour plus de détails, faire la commande `' + Command.prefix
       + 'help`')
     }
