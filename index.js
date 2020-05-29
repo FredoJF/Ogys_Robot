@@ -6,7 +6,7 @@ const Vote = require('./commands/vote')
 const Tg = require('./commands/tg')
 
 bot.on("ready", () => {
-  bot.user.setActivity("_help", { type: "WATCHING" })})
+  bot.user.setPresence({ activity: { name: '_help', type: 3 }, status: 'available' })})
 
 bot.on('message', function(msg) {
   if (!(msg.channel instanceof Discord.DMChannel))
