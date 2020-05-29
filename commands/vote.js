@@ -43,6 +43,7 @@ module.exports = class Vote extends Command {
             r.remove()
           } else{
             r.emoji.name === '👍' ? vote.vote(u, true) : vote.vote(u, false)
+            r.users.remove(u)
           }
         })
         collector.on('end', function(collected, reason){ m.channel.send(vote.result()) })
