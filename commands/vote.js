@@ -23,7 +23,7 @@ module.exports = class Vote extends Command {
     if (!isNaN(text[0].replace('m', ''))){
       if (text[0].includes('m')){
         var duration_arr = text[0].split('m')
-        if (duration_arr.length > 2)
+        if (!(duration_arr[1] === ''))
         var duration_res = (parseInt(duration_arr[0]) * 60 * 1000) + (parseInt(duration_arr[1]) * 1000)
         else
         var duration_res = (parseInt(duration_arr[0]) * 60 * 1000)
