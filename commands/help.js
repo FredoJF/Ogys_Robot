@@ -11,11 +11,14 @@ module.exports = class Help extends Command {
     if (!(msg.channel instanceof Discord.DMChannel))
         msg.reply('Je t\'ai envoyé la liste des commandes en privé')
 
-    msg.author.send('Voici la liste des commandes disponibles\n\n'
+    msg.author.send('WOOOAH twee-vwoop VRrrUHD DEda dah\n\n'
+    + 'Voici la liste des commandes disponibles\n\n'
     + '`' + Command.prefix + 'help`: Permet d\'afficher ce message\nAlias: `'+ Command.prefix + 'h`\n\n'
     + '`' + Command.prefix + 'vote durée intitulé`: Permet de créer un sondage pour lequel les utilisateurs peuvent répondre par oui ou non\nExemples: `' + Command.prefix +
     'vote 30 Aimez-vous la couleur rouge ?`\n`' + Command.prefix + 'vote 6m30 Aimez-vous la couleur bleue ?`\nAlias: `'+ Command.prefix + 'v durée intitulé`\n\n'
+    + '`' + Command.prefix + 'scream`: Je crie\n\n'
     + '`' + Command.prefix + 'tg`: Si vous faites cette commande je vous insulte\n\n'
+    + '`' + Command.prefix + 'ping`: Vous permet de connaître la latence que vous avez avec moi en millisecondes\n\n'
     + 'Informations supplémentaires: Je suis encore en phase de développement, soyez donc indulgents svp\nSi vous avez une suggestion ou que vous trouvez un bug, contacter Fredo#8489')
   }
 
