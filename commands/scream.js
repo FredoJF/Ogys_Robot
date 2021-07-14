@@ -1,12 +1,13 @@
-const Command = require('./command.js')
+module.exports = {
 
-module.exports = class Scream extends Command {
+  name: 'scream',
 
+  /*
   static match(msg){
     return msg.content.startsWith(Command.prefix + 'scream')
-  }
+  }*/
 
-  static action(msg){
+  action(msg){
     msg.channel.send('https://www.youtube.com/watch?v=B6mh45mA_JY')
   }
 

@@ -1,36 +1,59 @@
+const fs = require('fs') 
 const Discord = require('discord.js')
 require('dotenv').config()
-const bot = new Discord.Client()
-const Help = require('./commands/help')
-const Hot = require('./commands/hot')
-const Vote = require('./commands/vote')
-const Tg = require('./commands/tg')
-const Scream = require('./commands/scream')
-const Ping = require('./commands/ping')
+const client = new Discord.Client()
+const Singleton = require('./classes/singleton')
 const checkVideo = require('./classes/checkVideo')
 
-function validURL(str) {
-  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
-    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
-  return !!pattern.test(str);
+
+client.commands = new Discord.Collection()
+
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'))
+
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`)
+	// set a new item in the Collection
+	// with the key as the command name and the value as the exported module
+
+	client.commands.set(command.name, command)
+
+  if (command.hasOwnProperty('aliases'))
+    command.aliases.forEach(element => {
+      //console.log(element)
+      client.commands.set(element, command)
+    })
+  
 }
 
-bot.on("ready", () => {
-  bot.user.setPresence({ activity: { name: '_help', type: 3 }, status: 'available' })})
+
+
+
+client.on("ready", () => {
+  client.user.setPresence({ activity: { name: '_help', type: 3 }, status: 'available' })})
 
 
 function checkCommand(msg){
-  if (!(msg.channel instanceof Discord.DMChannel))
+
+  const args = msg.content.slice(Singleton.prefix.length).trim().split(/ +/)
+	const command = args.shift().toLowerCase()
+
+  //console.log(command)
+
+  try {
+		client.commands.get(command).action(msg)
+	} catch (error) {
+		//console.error(error)
+		//msg.reply('there was an error trying to execute that command!')
+	}
+
+
+  /*if (!(msg.channel instanceof Discord.DMChannel))
     var commandUsed = Ping.parse(msg) || Scream.parse(msg) || Tg.parse(msg) || Vote.parse(msg) || Help.parse(msg)
   else
-    var commandUsed = Ping.parse(msg) || Scream.parse(msg) || Tg.parse(msg) || Help.parse(msg)
+    var commandUsed = Ping.parse(msg) || Scream.parse(msg) || Tg.parse(msg) || Help.parse(msg)*/
 }
 
-bot.on('message', function(msg) {
+client.on('message', function(msg) {
 
   if (msg.attachments.size > 0){
     (async function(){
@@ -67,4 +90,4 @@ bot.on('message', function(msg) {
 
 })
 
-bot.login(process.env.BOT_LOGIN)
+client.login(process.env.BOT_LOGIN)

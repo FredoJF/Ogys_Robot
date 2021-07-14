@@ -1,24 +1,29 @@
 const Discord = require('discord.js')
-const Command = require('./command.js')
+const Singleton = require('../classes/singleton')
 
-module.exports = class Help extends Command {
+module.exports = {
 
-  static match(msg){
-    return msg.content.startsWith(Command.prefix + 'help') || msg.content.startsWith(Command.prefix + 'h')
-  }
+  /*
+  match(msg){
+    return msg.content.startsWith(Singleton.prefix + 'help') || msg.content.startsWith(Singleton.prefix + 'h')
+  },*/
 
-  static action(msg){
+  name: 'help',
+  aliases: ['h'],
+
+  action(msg){
     if (!(msg.channel instanceof Discord.DMChannel))
         msg.reply('Je t\'ai envoyé la liste des commandes en privé')
 
     msg.author.send('WOOOAH twee-vwoop VRrrUHD DEda dah\n\n'
     + 'Voici la liste des commandes disponibles\n\n'
-    + '`' + Command.prefix + 'help`: Permet d\'afficher ce message\nAlias: `'+ Command.prefix + 'h`\n\n'
-    + '`' + Command.prefix + 'vote durée intitulé`: Permet de créer un sondage pour lequel les utilisateurs peuvent répondre par oui ou non\nExemples: `' + Command.prefix +
-    'vote 30 Aimez-vous la couleur rouge ?`\n`' + Command.prefix + 'vote 6m30 Aimez-vous la couleur bleue ?`\nAlias: `'+ Command.prefix + 'v durée intitulé`\n\n'
-    + '`' + Command.prefix + 'scream`: Je crie\n\n'
-    + '`' + Command.prefix + 'tg`: Si vous faites cette commande je vous insulte\n\n'
-    + '`' + Command.prefix + 'ping`: Vous permet de connaître la latence que vous avez avec moi en millisecondes\n\n'
+    + '`' + Singleton.prefix + 'help`: Permet d\'afficher ce message\nAlias: `'+ Singleton.prefix + 'h`\n\n'
+    + '`' + Singleton.prefix + 'vote durée intitulé`: Permet de créer un sondage pour lequel les utilisateurs peuvent répondre par oui ou non\nExemples: `' + Singleton.prefix +
+    'vote 30 Aimez-vous la couleur rouge ?`\n`' + Singleton.prefix + 'vote 6m30 Aimez-vous la couleur bleue ?`\nAlias: `'+ Singleton.prefix + 'v durée intitulé`\n\n'
+    + '`' + Singleton.prefix + 'scream`: Je crie\n\n'
+    + '`' + Singleton.prefix + 'tg`: Si vous faites cette commande je vous insulte\n\n'
+    + '`' + Singleton.prefix + 'ping`: Vous permet de connaître la latence que vous avez avec moi en millisecondes\n\n'
+    + '`' + Singleton.prefix + 'coinflip`: Je fais un Pile ou Face pour vous\nAlias: `'+ Singleton.prefix + 'cf`\n\n'
     + 'Informations supplémentaires: Je suis encore en phase de développement, soyez donc indulgents svp\nSi vous avez une suggestion ou que vous trouvez un bug, contacter Fredo#8489')
   }
 

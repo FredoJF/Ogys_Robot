@@ -1,5 +1,5 @@
 module.exports = class command {
-  static prefix = "_"
+  
 
   static parse (msg) {
     if (this.match(msg)){

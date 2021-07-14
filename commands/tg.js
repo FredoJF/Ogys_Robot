@@ -1,12 +1,13 @@
-const Command = require('./command.js')
+module.exports = {
 
-module.exports = class Tg extends Command {
-
+  /*
   static match(msg){
     return msg.content.startsWith(Command.prefix + 'tg')
-  }
+  }*/
 
-  static action(msg){
+  name: 'tg',
+
+  action(msg){
     msg.reply('Fermes ta gueule')
   }
 

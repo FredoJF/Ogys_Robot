@@ -1,4 +1,4 @@
-const Command = require('./command.js')
+const Command = require('../classes/command.js')
 
 module.exports = class Hot extends Command {
   

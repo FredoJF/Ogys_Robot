@@ -1,15 +1,18 @@
-const Command = require('./command.js')
+const Singleton = require('../classes/singleton')
 
-module.exports = class Ping extends Command {
+module.exports = {
 
-  static match(msg){
-    return msg.content.startsWith(Command.prefix + 'ping')
-  }
+  name: 'ping',
 
-  static action(msg){
+  /*
+  match(msg){
+    return msg.content.startsWith(Singleton.prefix + 'ping')
+  },*/
+
+  action(msg){
     let createdAt = msg.createdAt.valueOf()
     let now = Date.now()
-    msg.reply('Pong! (' + (now - createdAt) + ' ms)')
+    msg.reply(('Pong! (' + (now - createdAt) + ' ms)').replace('-',''))
   }
 
 
