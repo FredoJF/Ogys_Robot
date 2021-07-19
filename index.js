@@ -69,7 +69,7 @@ client.on('message', function(msg) {
       msg.delete()
     })
 
-    if (validURL(msg.content) && !msg.content.includes("youtube.com")){
+    if (Singleton.validURL(msg.content) && !msg.content.includes("youtube.com")){
       (async function(){
 
         await checkVideo(msg.content)
