@@ -31,10 +31,9 @@ module.exports = async (url) => {
         rli.once("close", () => {
             resolve("safe") // Video completely checked
         })
-    //}).catch(function(error){
-     //   console.error(error)
+        //}).catch(function(error){
+        //   console.error(error)
     })
 }
 
-// CREDIT WHERE CREDIT IS DUE
 // This is adapted from u/T1J8r's code on r/discordapp
