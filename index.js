@@ -43,23 +43,25 @@ client.on("ready", () => {
 
 function checkCommand(msg) {
 
-  const args = msg.content.slice(Singleton.prefix.length).trim().split(/ +/)
-  const command = args.shift().toLowerCase()
+  if (msg.content.charAt(0) == Singleton.prefix) {
+    const args = msg.content.slice(1).trim().split(/ +/)
+    const command = args.shift().toLowerCase()
 
-  //console.log(command)
+    //console.log(command)
 
-  try {
-    client.commands.get(command).action(msg)
-  } catch (error) {
-    //console.error(error)
-    //msg.reply('there was an error trying to execute that command!')
+    try {
+      client.commands.get(command).action(msg)
+    } catch (error) {
+      //console.error(error)
+      //msg.reply('there was an error trying to execute that command!')
+    }
+
+
+    /*if (!(msg.channel instanceof Discord.DMChannel))
+      var commandUsed = Ping.parse(msg) || Scream.parse(msg) || Tg.parse(msg) || Vote.parse(msg) || Help.parse(msg)
+    else
+      var commandUsed = Ping.parse(msg) || Scream.parse(msg) || Tg.parse(msg) || Help.parse(msg)*/
   }
-
-
-  /*if (!(msg.channel instanceof Discord.DMChannel))
-    var commandUsed = Ping.parse(msg) || Scream.parse(msg) || Tg.parse(msg) || Vote.parse(msg) || Help.parse(msg)
-  else
-    var commandUsed = Ping.parse(msg) || Scream.parse(msg) || Tg.parse(msg) || Help.parse(msg)*/
 }
 
 client.on('message', function (msg) {
@@ -97,6 +99,10 @@ client.on('message', function (msg) {
     checkCommand(msg)
   }
 
+})
+
+client.on("error", () => {
+  client.login(process.env.BOT_LOGIN)
 })
 
 client.login(process.env.BOT_LOGIN)

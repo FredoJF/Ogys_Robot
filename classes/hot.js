@@ -4,45 +4,47 @@ module.exports = async (user, opponent, question, number) => {
 
         let choosen_number = -1
 
-        user.send(question + '\nAdversaire: @' + opponent.tag).then(m => {
+        user.send("**" + question + '**\nAdversaire: @' + opponent.tag).then(m => {
 
             var accepted_emojis = ['1️⃣', '2️⃣']
 
-            m.react('1️⃣')
-            m.react('2️⃣')
+            try {
+                m.react('1️⃣')
+                m.react('2️⃣')
 
-            if (number >= 3) {
-                m.react('3️⃣')
-                accepted_emojis.push('3️⃣')
-            }
-            if (number >= 4) {
-                m.react('4️⃣')
-                accepted_emojis.push('4️⃣')
-            }
-            if (number >= 5) {
-                m.react('5️⃣')
-                accepted_emojis.push('5️⃣')
-            }
-            if (number >= 6) {
-                m.react('6️⃣')
-                accepted_emojis.push('6️⃣')
-            }
-            if (number >= 7) {
-                m.react('7️⃣')
-                accepted_emojis.push('7️⃣')
-            }
-            if (number >= 8) {
-                m.react('8️⃣')
-                accepted_emojis.push('8️⃣')
-            }
-            if (number >= 9) {
-                m.react('9️⃣')
-                accepted_emojis.push('9️⃣')
-            }
-            if (number == 10) {
-                m.react('🔟')
-                accepted_emojis.push('🔟')
-            }
+                if (number >= 3) {
+                    m.react('3️⃣')
+                    accepted_emojis.push('3️⃣')
+                }
+                if (number >= 4) {
+                    m.react('4️⃣')
+                    accepted_emojis.push('4️⃣')
+                }
+                if (number >= 5) {
+                    m.react('5️⃣')
+                    accepted_emojis.push('5️⃣')
+                }
+                if (number >= 6) {
+                    m.react('6️⃣')
+                    accepted_emojis.push('6️⃣')
+                }
+                if (number >= 7) {
+                    m.react('7️⃣')
+                    accepted_emojis.push('7️⃣')
+                }
+                if (number >= 8) {
+                    m.react('8️⃣')
+                    accepted_emojis.push('8️⃣')
+                }
+                if (number >= 9) {
+                    m.react('9️⃣')
+                    accepted_emojis.push('9️⃣')
+                }
+                if (number == 10) {
+                    m.react('🔟')
+                    accepted_emojis.push('🔟')
+                }
+            } catch (error) {}
 
             const filter = (reaction, user) => {
                 return accepted_emojis.includes(reaction.emoji.name) && user.id != 706410612934049823;
@@ -50,7 +52,7 @@ module.exports = async (user, opponent, question, number) => {
 
             m.awaitReactions(filter, {
                     max: 1,
-                    time: 120000,
+                    time: 60000,
                     errors: ['time']
                 })
                 .then(collected => {
@@ -90,11 +92,12 @@ module.exports = async (user, opponent, question, number) => {
                     }
 
                     resolve(choosen_number)
+                    setTimeout(() => m.delete(), 10000)
+
+                }).catch(() => {
+                    reject(-1)
                     m.delete()
-
                 })
-                .catch(console.error)
-
         })
 
     })
