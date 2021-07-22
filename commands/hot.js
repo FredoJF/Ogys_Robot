@@ -55,7 +55,8 @@ module.exports = {
             switch (reaction.emoji.name) {
               case '❌':
                 number = -1
-                msg.delete()
+                msg.reactions.removeAll()
+                setTimeout(() => msg.delete(), 10000)
                 break
               case '2️⃣':
                 number = 2
