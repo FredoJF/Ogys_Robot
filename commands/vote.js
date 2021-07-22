@@ -1,4 +1,5 @@
-const VoteClass = require('../classes/vote.js')
+const VoteClass = require('../classes/vote')
+const Discord = require('discord.js')
 const Singleton = require('../classes/singleton')
 
 module.exports = {
@@ -16,8 +17,7 @@ module.exports = {
 
     if (!(msg.channel instanceof Discord.DMChannel)) {
 
-      var channel = msg.channel
-      var text = msg.content.split(" ")
+      var text = msg.content.slice(Singleton.prefix.length).trim().split(/ +/)
       msg.delete()
       text.shift()
 
@@ -41,7 +41,7 @@ module.exports = {
 
         const vote = new VoteClass(msg.author, text)
 
-        channel.send('***' + text + '***\nDurée du sondage: ' + Singleton.millisToMinutesAndSeconds(duration) + '\nAuteur: <@' + msg.author.id + '>').then(m => {
+        msg.channel.send('***' + text + '***\nDurée du sondage: ' + Singleton.millisToMinutesAndSeconds(duration) + '\nAuteur: <@' + msg.author.id + '>').then(m => {
           m.react('👍')
           m.react('👎')
 
