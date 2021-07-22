@@ -26,8 +26,8 @@ module.exports = {
     + '`' + Singleton.prefix + 'tg`: Si vous faites cette commande je vous insulte\n\n'
     + '`' + Singleton.prefix + 'ping`: Vous permet de connaître la latence que vous avez avec moi en millisecondes\n\n'
     + '`' + Singleton.prefix + 'coinflip`: Je fais un Pile ou Face pour vous\nAlias: `'+ Singleton.prefix + 'cf`\n\n'
-    + '`' + Singleton.prefix + 'hot @utilisateur#0000 intitulé`: Permet de proposer un défi à un utilisateur cible basé sur le jeu "Pour Combien ?" ou "Hot Combien ?"\nExemples: `' + Singleton.prefix +
-    'hot @Fredo#8489 Pour combien tu supprimes ton serveur Discord` ?\nAlias: `'+ Singleton.prefix + 'cote @utilisateur#0000 intitulé`\n\n'
+    + '`' + Singleton.prefix + 'hot @utilisateur#0000 phrase quelconque`: Permet de proposer un défi à un utilisateur cible basé sur le jeu "Pour Combien ?" ou "Hot Combien ?"\nExemple: `' + Singleton.prefix +
+    'hot @Fredo#8489 Pour combien tu supprimes ton serveur Discord` ?\nAlias: `'+ Singleton.prefix + 'cote @utilisateur#0000 phrase`\n\n'
     + 'Informations supplémentaires: Je suis encore en phase de développement, soyez donc indulgents svp\nSi vous avez une suggestion ou que vous trouvez un bug, contacter Fredo#8489')
 
   }
