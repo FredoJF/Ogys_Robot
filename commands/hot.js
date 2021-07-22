@@ -157,7 +157,7 @@ module.exports = {
 
           }).catch(() => {
             msg.reply('Pas de réaction après 2 minutes pour "' + question + '"')
-            msg.delete()
+            setTimeout(() => msg.delete(), 10000)
           })
           .catch(console.error)
       }

@@ -96,7 +96,7 @@ module.exports = async (user, opponent, question, number) => {
 
                 }).catch(() => {
                     reject(-1)
-                    m.delete()
+                    setTimeout(() => m.delete(), 10000)
                 })
         })
 
