@@ -47,9 +47,6 @@ client.on("guildMemberAdd", (member) => {
       member.roles.add(
         member.guild.roles.cache.find((r) => r.id === "735567713505902614")
       );
-      member.roles.add(
-        member.guild.roles.cache.find((r) => r.id === "846475989021098014")
-      );
     }
   } else if (member.guild.id == "715683809596801055") {
     if (member.user.bot)
