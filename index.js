@@ -35,9 +35,6 @@ client.on("ready", () => {
     },
     status: "available",
   });
-  const readGuildsInfos = fs.readFileSync("guilds.json");
-  let guildinfos = JSON.parse(readGuildsInfos);
-  console.log(guildinfos);
 });
 
 client.on("guildMemberAdd", (member) => {
