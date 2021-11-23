@@ -47,7 +47,7 @@ client.on("guildMemberAdd", (member) => {
       if (member.guild.id == guild.id) {
         if (member.user.bot)
           member.roles.add(
-            member.guild.roles.cache.find((r) => r.id === guild.roles.bot)
+            member.guild.roles.cache.find((r) => r.id === guild.roles.bots)
           );
         else {
           member.roles.add(
