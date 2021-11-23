@@ -41,7 +41,7 @@ client.on("guildMemberAdd", (member) => {
   if (process.env.AUTO_ROLE == "true") {
     const readGuildsInfos = fs.readFileSync("guilds.json");
     let guildinfos = JSON.parse(readGuildsInfos);
-    console.log(guildinfos);
+    //console.log(guildinfos);
 
     Object.values(guildinfos).forEach((guild) => {
       if (member.guild.id == guild.id) {
