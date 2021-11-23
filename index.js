@@ -35,28 +35,30 @@ client.on("ready", () => {
     },
     status: "available",
   });
+  const readGuildsInfos = fs.readFileSync("guilds.json");
+  let guildinfos = JSON.parse(readGuildsInfos);
+  console.log(guildinfos);
 });
 
 client.on("guildMemberAdd", (member) => {
-  if (member.guild.id == "712460386120761446") {
-    if (member.user.bot)
-      member.roles.add(
-        member.guild.roles.cache.find((r) => r.id === "846113352262484018")
-      );
-    else {
-      member.roles.add(
-        member.guild.roles.cache.find((r) => r.id === "735567713505902614")
-      );
-    }
-  } else if (member.guild.id == "715683809596801055") {
-    if (member.user.bot)
-      member.roles.add(
-        member.guild.roles.cache.find((r) => r.id === "907289169892618331")
-      );
-    else
-      member.roles.add(
-        member.guild.roles.cache.find((r) => r.id === "907289212708093993")
-      );
+  if (process.env.AUTO_ROLE == "true") {
+    const readGuildsInfos = fs.readFileSync("guilds.json");
+    let guildinfos = JSON.parse(readGuildsInfos);
+    console.log(guildinfos);
+
+    Object.values(guildinfos).forEach((guild) => {
+      if (member.guild.id == guild.id) {
+        if (member.user.bot)
+          member.roles.add(
+            member.guild.roles.cache.find((r) => r.id === guild.roles.bot)
+          );
+        else {
+          member.roles.add(
+            member.guild.roles.cache.find((r) => r.id === guild.roles.everyone)
+          );
+        }
+      }
+    });
   }
 });
 
