@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "child_process": "^1.0.2",
+    "discord-music-player": "^8.3.1",
     "discord.js": "^12.5.3",
     "dotenv": "^10.0.0",
     "ffprobe": "^1.1.2",

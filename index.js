@@ -28,9 +28,12 @@ for (const file of commandFiles) {
 }
 
 client.on("ready", () => {
+  const readGuildsInfos = fs.readFileSync("guilds.json");
+  Singleton.guildinfos = JSON.parse(readGuildsInfos);
+
   client.user.setPresence({
     activity: {
-      name: "_help",
+      name: Singleton.prefix + "help",
       type: 3,
     },
     status: "available",
@@ -39,11 +42,9 @@ client.on("ready", () => {
 
 client.on("guildMemberAdd", (member) => {
   if (process.env.AUTO_ROLE == "true") {
-    const readGuildsInfos = fs.readFileSync("guilds.json");
-    let guildinfos = JSON.parse(readGuildsInfos);
     //console.log(guildinfos);
 
-    Object.values(guildinfos).forEach((guild) => {
+    Object.values(Singleton.guildinfos).forEach((guild) => {
       if (member.guild.id == guild.id) {
         if (member.user.bot)
           member.roles.add(
@@ -72,11 +73,6 @@ function checkCommand(msg) {
       //console.error(error)
       //msg.reply('there was an error trying to execute that command!')
     }
-
-    /*if (!(msg.channel instanceof Discord.DMChannel))
-      var commandUsed = Ping.parse(msg) || Scream.parse(msg) || Tg.parse(msg) || Vote.parse(msg) || Help.parse(msg)
-    else
-      var commandUsed = Ping.parse(msg) || Scream.parse(msg) || Tg.parse(msg) || Help.parse(msg)*/
   }
 }
 
