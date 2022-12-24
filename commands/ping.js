@@ -1,16 +1,14 @@
-const Singleton = require("../classes/singleton");
+const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-  name: "ping",
-
-  /*
-  match(msg){
-    return msg.content.startsWith(Singleton.prefix + 'ping')
-  },*/
-
-  action(msg) {
-    let createdAt = msg.createdAt.valueOf();
+  data: new SlashCommandBuilder()
+    .setName("ping")
+    .setDescription("Replies with Pong!"),
+  async execute(interaction) {
+    let createdAt = interaction.createdAt.valueOf();
     let now = Date.now();
-    msg.reply(("Pong! (" + (now - createdAt) + " ms)").replace("-", ""));
+    await interaction.reply(
+      ("Pong! (" + (now - createdAt) + " ms)").replace("-", "")
+    );
   },
 };

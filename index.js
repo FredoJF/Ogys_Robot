@@ -1,124 +1,89 @@
-const fs = require("fs");
-const Discord = require("discord.js");
 require("dotenv").config();
-const client = new Discord.Client();
-const Singleton = require("./classes/singleton");
-const checkVideo = require("./classes/checkVideo");
+const moment = require("moment"),
+  fs = require("fs"),
+  path = require("path"),
+  commands = [];
 
-client.commands = new Discord.Collection();
+// SEND COMMANDS TO DISCORD
+const { REST, Routes, Collection } = require("discord.js");
 
-const commandFiles = fs
-  .readdirSync("./commands")
-  .filter((file) => file.endsWith(".js"));
+// const commands = [
+//   {
+//     name: "ping",
+//     description: "Replies with Pong!",
+//   },
+
+//   {
+//     name: "join",
+//     description: "Joins the voice channel you are in.",
+//   },
+
+//   {
+//     name: "leave",
+//     description: "Leaves the voice channel.",
+//   },
+
+//   {
+//     name: "setup",
+//     description: "Creates a text channel for music management.",
+//   },
+// ];
+
+const { Client, GatewayIntentBits } = require("discord.js");
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+//DB CONNECTION
+const { Client: PGClient } = require("pg");
+const pg = new PGClient();
+pg.connect();
+
+// COMMANDS
+client.commands = new Collection();
+const commandsPath = path.join(__dirname, "commands"),
+  commandFiles = fs
+    .readdirSync(commandsPath)
+    .filter((file) => file.endsWith(".js"));
 
 for (const file of commandFiles) {
-  const command = require(`./commands/${file}`);
-  // set a new item in the Collection
-  // with the key as the command name and the value as the exported module
-
-  client.commands.set(command.name, command);
-
-  //console.log(command.name)
-
-  if (command.hasOwnProperty("aliases"))
-    command.aliases.forEach((element) => {
-      //    console.log(element)
-      client.commands.set(element, command);
-    });
+  const filePath = path.join(commandsPath, file),
+    command = require(filePath);
+  client.commands.set(command.data.name, command);
+  commands.push(command.data.toJSON());
 }
+const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
+
+(async () => {
+  try {
+    console.log("Started refreshing application (/) commands.");
+
+    await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
+      body: commands,
+    });
+
+    console.log("Successfully reloaded application (/) commands.");
+  } catch (error) {
+    console.error(error);
+  }
+})();
 
 client.on("ready", () => {
-  const readGuildsInfos = fs.readFileSync("guilds.json");
-  Singleton.guildinfos = JSON.parse(readGuildsInfos);
-
-  client.user.setPresence({
-    activity: {
-      name: Singleton.prefix + "help",
-      type: 3,
-    },
-    status: "available",
-  });
+  console.log(`Logged in as ${client.user.tag}!`);
 });
 
-client.on("guildMemberAdd", (member) => {
-  if (process.env.AUTO_ROLE == "true") {
-    //console.log(guildinfos);
+client.on("interactionCreate", async (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
 
-    Object.values(Singleton.guildinfos).forEach((guild) => {
-      if (member.guild.id == guild.id) {
-        if (member.user.bot)
-          member.roles.add(
-            member.guild.roles.cache.find((r) => r.id === guild.roles.bots)
-          );
-        else {
-          member.roles.add(
-            member.guild.roles.cache.find((r) => r.id === guild.roles.everyone)
-          );
-        }
-      }
+  const command = client.commands.get(interaction.commandName);
+  if (!command) return;
+  try {
+    await command.execute(interaction);
+  } catch (error) {
+    console.error(error);
+    await interaction.reply({
+      content: "Une erreur est survenue!",
+      ephemeral: true,
     });
   }
 });
 
-function checkCommand(msg) {
-  if (msg.content.charAt(0) == Singleton.prefix) {
-    const args = msg.content.slice(1).trim().split(/ +/);
-    const command = args.shift().toLowerCase();
-
-    //console.log(command)
-
-    try {
-      client.commands.get(command).action(msg);
-    } catch (error) {
-      //console.error(error)
-      //msg.reply('there was an error trying to execute that command!')
-    }
-  }
-}
-
-client.on("message", function (msg) {
-  if (msg.attachments.size > 0) {
-    (async function () {
-      await checkVideo(msg.attachments.array()[0].url);
-    })()
-      .then((resolve) => {
-        //console.log("then safe")
-        checkCommand(msg);
-      })
-      .catch((reject) => {
-        //console.log("then reject")
-        msg.reply(
-          "Interdiction d'envoyer ce genre de contenu (crash vidéo/gif)"
-        );
-        msg.delete();
-      });
-
-    if (
-      Singleton.validURL(msg.content) &&
-      !msg.content.includes("youtube.com")
-    ) {
-      (async function () {
-        await checkVideo(msg.content);
-      })()
-        .then((resolve) => {
-          //console.log("then safe")
-          checkCommand(msg);
-        })
-        .catch((reject) => {
-          //console.log("then reject")
-          msg.reply(
-            "Interdiction d'envoyer ce genre de contenu (crash vidéo/gif)"
-          );
-          msg.delete();
-        });
-    }
-  } else {
-    checkCommand(msg);
-  }
-});
-
-client.on("error", () => {
-  client.login(process.env.BOT_LOGIN);
-});
-
-client.login(process.env.BOT_LOGIN);
+client.login(process.env.TOKEN);

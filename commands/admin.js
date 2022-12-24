@@ -1,24 +1,51 @@
-const Singleton = require("../classes/singleton");
+const { SlashCommandBuilder } = require("discord.js");
+
+const MusicPlayerBuilder = require("../classes/MusicPlayerBuilder");
 
 module.exports = {
-  name: "admin",
+  data: new SlashCommandBuilder()
+    .setName("admin")
+    .setDescription("Administration commands")
+    .addSubcommand((command) =>
+      command.setName("clearchannel").setDescription("Clear this text channel")
+    )
+    .addSubcommand((command) =>
+      command
+        .setName("createmusicchannel")
+        .setDescription("Creates the music player text channel")
+    )
+    .setDefaultMemberPermissions(0),
+  async execute(interaction) {
+    if (!interaction.channel.isDMBased()) {
+      switch (interaction.options.getSubcommand()) {
+        case "clearchannel":
+          interaction.channel.clone();
+          interaction.channel.delete();
+          break;
 
-  action(msg) {
-    var args = msg.content.slice(Singleton.prefix.length).trim().split(/ +/);
-    args.shift();
+        case "createmusicchannel":
+          interaction.channel
+            .clone({ name: "Music" })
+            .then((result) => {
+              var message = new MusicPlayerBuilder([
+                "Musique 1",
+                "Musique 2",
+                "Musique 3",
+              ]).message;
 
-    let admin_id = "undefined";
+              //console.log(message);
+              result.send(message);
+            })
+            .catch((err) => {});
+          await interaction.reply({
+            content: "Music channel created !",
+            ephemeral: true,
+          });
+          break;
 
-    Object.values(Singleton.guildinfos).forEach((guild) => {
-      if (msg.guild.id == guild.id) {
-        admin_id = guild.admin_id;
+        default:
+          break;
       }
-    });
-
-    if (msg.author.id == admin_id)
-      if (args[0] == "clearchannel" || args[0] == "clear") {
-        msg.channel.clone();
-        msg.channel.delete();
-      }
+    }
   },
 };
